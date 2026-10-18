@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — TeamMotor</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="flex items-center gap-12">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="topbar-title">
+          <h1>Dashboard</h1>
+          <p>Here's how the shop is doing today</p>
+        </div>
+      </div>
+      <div class="topbar-actions" id="topbarActions"></div>
+    </header>
+
+    <main class="page">
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="card" style="margin-bottom:1.25rem;">
+        <div class="card-title-row">
+          <h3>Recent Sales</h3>
+          <a href="sales.html" class="btn btn-ghost btn-sm">View all</a>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Product</th><th class="text-right">Quantity</th><th class="text-right">Amount</th><th>Payment</th><th>Time</th></tr></thead>
+          <tbody id="recentSalesTbody"></tbody>
+        </table></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title-row">
+            <h3 id="salesTrendTitle">Sales Trend — Last 7 Days</h3>
+            <div class="chip-row" id="trendRange">
+              <span class="chip active" data-range="week">1 Week</span>
+              <span class="chip" data-range="month">1 Month</span>
+              <span class="chip" data-range="year">1 Year</span>
+            </div>
+          </div>
+          <div class="bar-chart" id="salesChart"></div>
+        </div>
+        <div class="card">
+          <div class="tabs" id="attentionTabs" style="margin-bottom:0.75rem;">
+            <button class="tab-btn active" data-tab="low">Low Stock</button>
+            <button class="tab-btn" data-tab="out">Out of Stock</button>
+            <button class="tab-btn" data-tab="stockin">Recent Stock-In</button>
+            <button class="tab-btn" data-tab="warranty">Warranties</button>
+          </div>
+          <div class="tab-panel active" id="panel-low"></div>
+          <div class="tab-panel" id="panel-out"></div>
+          <div class="tab-panel" id="panel-stockin"></div>
+          <div class="tab-panel" id="panel-warranty"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem;">
+        <div class="card-title-row">
+          <h3>Product Performance</h3>
+          <p style="margin:0;color:var(--steel);font-size:.82rem;">Units sold vs. current stock</p>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Product</th><th class="text-right">Units Sold</th><th class="text-right">Current Stock</th><th>Status</th></tr></thead>
+          <tbody id="performanceTbody"></tbody>
+        </table></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/mock-data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/app.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

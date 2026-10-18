@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up — TeamMotor</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<!-- Visual design only. There is intentionally no <form>, no submit handler and no script on this page:
+     nothing is sent anywhere and nothing is stored. Wire it up when the sign-up behaviour is defined. -->
+<div class="signup-shell">
+  <div class="signup-card">
+    <h1>Create an account</h1>
+
+    <div class="signup-fields">
+      <input type="text" placeholder="First name" aria-label="First name" autocomplete="given-name">
+      <input type="text" placeholder="Last name" aria-label="Last name" autocomplete="family-name">
+      <input type="email" class="span-2" placeholder="Email" aria-label="Email" autocomplete="email">
+      <input type="password" class="span-2" placeholder="Password" aria-label="Password" autocomplete="new-password">
+      <input type="password" class="span-2" placeholder="Confirm password" aria-label="Confirm password" autocomplete="new-password">
+    </div>
+
+    <button type="button" class="btn btn-primary btn-register">Register</button>
+
+    <div class="divider">Or continue with</div>
+    <button type="button" class="btn-google"><img src="img/google.png" alt="" width="28" height="28"> Google</button>
+
+    <p class="login-alt">Already have an account? <a class="login-link" href="login.html">Log In</a></p>
+  </div>
+</div>
+
+</body>
+</html>

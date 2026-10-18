@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suppliers — TeamMotor</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="flex items-center gap-12">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="topbar-title">
+          <h1>Suppliers</h1>
+          <p>Who you order parts from</p>
+        </div>
+      </div>
+      <div class="topbar-actions" id="topbarActions"></div>
+    </header>
+
+    <main class="page">
+      <div class="page-header">
+        <div class="search-input" style="max-width:20rem;"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="21" y2="21"/></svg><input type="text" id="supSearch" placeholder="Search suppliers..."></div>
+        <div class="actions">
+          <button class="btn btn-primary" id="addSupplierBtn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add Supplier</button>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Supplier</th><th>Contact Person</th><th>Contact Number</th><th>Email</th>
+              <th>Products Supplied</th><th>Last Delivery</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="suppliersTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add / Edit Supplier -->
+<div class="modal-overlay" id="supplierModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="supplierModalTitle">Add Supplier</h2>
+      <button class="modal-close" data-close="supplierModalOverlay"><svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <form id="supplierForm" novalidate>
+        <div class="field"><label for="supName">Supplier Name</label><input type="text" id="supName" required maxlength="60"></div>
+        <div class="form-grid">
+          <div class="field"><label for="supContact">Contact Person</label><input type="text" id="supContact" required maxlength="50"></div>
+          <div class="field"><label for="supPhone">Contact Number</label><input type="tel" id="supPhone" required placeholder="09xx-xxx-xxxx"></div>
+          <div class="field"><label for="supEmail">Email</label><input type="email" id="supEmail" required></div>
+          <div class="field"><label for="supLastDelivery">Last Delivery</label><input type="date" id="supLastDelivery"></div>
+          <div class="field span-2">
+            <label for="supStatus">Status</label>
+            <select id="supStatus"><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close="supplierModalOverlay">Cancel</button>
+      <button class="btn btn-primary" id="saveSupplierBtn">Save Supplier</button>
+    </div>
+  </div>
+</div>
+
+<!-- View Supplier -->
+<div class="modal-overlay" id="supplierViewOverlay">
+  <div class="modal">
+    <div class="modal-header"><h2>Supplier Details</h2>
+      <button class="modal-close" data-close="supplierViewOverlay"><svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button>
+    </div>
+    <div class="modal-body" id="supplierViewBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close="supplierViewOverlay">Close</button>
+      <button class="btn btn-primary" id="supplierViewToEdit">Edit Supplier</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/mock-data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/app.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/suppliers.js"></script>
+</body>
+</html>

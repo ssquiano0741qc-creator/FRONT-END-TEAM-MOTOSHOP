@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — TeamMotor</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="login-shell">
+  <div class="login-visual">
+    <div class="pitch">
+      <h2>Run the shop without the spreadsheet</h2>
+      <p>Inventory, POS, and sales tracking in one place — built for the counter, not a corporate back office.</p>
+    </div>
+  </div>
+
+  <div class="login-form-side">
+    <div class="login-box">
+      <div class="login-brand">
+        <h1>TeamMotor</h1>
+        <p>Parts &amp; Accessories</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" autocomplete="current-password" required>
+        </div>
+        <a class="login-link forgot-link" href="#">Forgot password</a>
+        <button type="submit" class="btn btn-primary btn-login">Log-in</button>
+      </form>
+
+      <div class="divider">Or continue with</div>
+      <button type="button" class="btn-google"><img src="img/google.png" alt="" width="28" height="28"> Google</button>
+
+      <p class="login-alt">Don&rsquo;t have an account? <a class="login-link" href="signup.html">Sign up</a></p>
+
+      <div class="login-demo">
+        <div class="role-toggle">
+          <button type="button" class="role-btn" id="loginAsAdmin">
+            <strong>Owner / Admin</strong><span>Full dashboard &amp; reports</span>
+          </button>
+          <button type="button" class="role-btn" id="loginAsStaff">
+            <strong>Staff</strong><span>Dashboard, POS &amp; inventory</span>
+          </button>
+        </div>
+        <div class="login-demo-note">This is a frontend prototype — any username/password is accepted, since there's no backend yet. Pick a role above to jump straight in.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/mock-data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/app.js"></script>
+<script>
+  seedStore();
+  const users = Store.get('users', []);
+
+  function goToRoleHome() {
+    // Confirm session was written before navigating
+    const check = getSession();
+    if (!check || !check.role) {
+      showToast('Could not save login session. Please try again.', 'danger');
+      return;
+    }
+    window.location.replace('index.html');
+  }
+
+  function loginAs(role) {
+    const match = users.find(u => u.role === role && u.status === 'Active');
+    const user = match
+      ? { name: match.name, username: match.username, role: match.role }
+      : { name: 'Guest ' + role, username: 'guest', role: role };
+    setSession(user);
+    goToRoleHome();
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const uname = document.getElementById('username').value.trim();
+    if (!uname) return;
+    const found = users.find(u => u.username.toLowerCase() === uname.toLowerCase() || u.email.toLowerCase() === uname.toLowerCase());
+    if (found && found.status === 'Inactive') {
+      showToast(found.name + '\u2019s account is inactive. Try juan.delacruz, or use a demo button below.', 'danger');
+      return;
+    }
+    if (found) {
+      setSession({ name: found.name, username: found.username, role: found.role });
+      goToRoleHome();
+    } else {
+      const role = /admin|owner|ronnie/i.test(uname) ? 'Admin' : 'Staff';
+      setSession({ name: uname, username: uname, role: role });
+      goToRoleHome();
+    }
+  });
+
+  document.getElementById('loginAsAdmin').addEventListener('click', function () { loginAs('Admin'); });
+  document.getElementById('loginAsStaff').addEventListener('click', function () { loginAs('Staff'); });
+</script>
+</body>
+</html>

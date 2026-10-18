@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warranty — TeamMotor</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="flex items-center gap-12">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="topbar-title">
+          <h1>Warranty</h1>
+          <p>Digital warranty records for motorcycles sold by TeamMotor</p>
+        </div>
+      </div>
+      <div class="topbar-actions" id="topbarActions"></div>
+    </header>
+
+    <main class="page">
+      <div class="stat-grid" id="warStatGrid"></div>
+
+      <div class="filter-bar">
+        <div class="search-input" style="max-width:17.5rem;"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="21" y2="21"/></svg><input type="text" id="warSearch" placeholder="Search customer or product..."></div>
+        <select class="select-filter" id="warFilterStatus">
+          <option value="">All Statuses</option>
+          <option value="Active">Active</option>
+          <option value="Expiring Soon">Expiring Soon</option>
+          <option value="Expired">Expired</option>
+          <option value="Claimed">Claimed</option>
+        </select>
+      </div>
+
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Customer</th><th>Product</th><th>Purchase Date</th><th>Expiration</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="warrantyTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="hint" style="margin-top:0.875rem;">Rubber items (tires) carry a defect-only warranty limited to 7 days from the purchase date.</p>
+      <p class="hint" style="margin-top:0.375rem;">These are digital reference records only and do not replace the shop's official physical warranty documents.</p>
+    </main>
+  </div>
+</div>
+
+<!-- Warranty Detail Modal -->
+<div class="modal-overlay" id="warrantyViewOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Warranty Details</h2>
+      <button class="modal-close" data-close="warrantyViewOverlay"><svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button>
+    </div>
+    <div class="modal-body" id="warrantyViewBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close="warrantyViewOverlay">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/mock-data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/app.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/warranty.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POS — TeamMotor</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="flex items-center gap-12">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="topbar-title">
+          <h1>TeamMotor POS</h1>
+          <p>Search products, build the sale, and take payment</p>
+        </div>
+      </div>
+      <div class="topbar-actions" id="topbarActions"></div>
+    </header>
+
+    <div class="pos-meta-bar">
+      <div class="pos-meta-item"><span class="pos-meta-label">Staff</span><span id="posMetaStaff">—</span></div>
+      <div class="pos-meta-item"><span class="pos-meta-label">Date &amp; Time</span><span id="posMetaDateTime">—</span></div>
+      <div class="pos-meta-item"><span class="pos-meta-label">Transaction #</span><span id="posMetaTxnNumber">—</span></div>
+    </div>
+
+    <main class="page page-pos">
+
+      <!-- Payment screen. Shown by the CSS :target rule when the URL ends in #payment (the "Proceed to
+           Payment" link on the cart). Ids used by js/pos.js are kept as-is: payment, cashFields, gcashFields,
+           paymentMethodGrid, payAmountReceived, payChange, completeSaleBtn. Everything else on this screen is
+           filled in by js/pos-receipt.js. -->
+      <section class="pos-payment" id="payment" aria-label="Payment">
+
+        <div class="pay-panel pay-main">
+          <div class="pay-head">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="9" y2="15"/></svg>
+            <div>
+              <h3>Payment</h3>
+              <p>Complete the payment to finish the transaction</p>
+            </div>
+            <a class="pay-back" href="#">&larr; Back to cart</a>
+          </div>
+
+          <div class="pay-due">
+            <svg viewBox="0 0 24 24"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+            <div class="pay-due-label"><strong>Total Amount Due</strong><span>(Item + Tax - Discount)</span></div>
+            <div class="pay-due-amount" id="payDueAmount">&#8369;0.00</div>
+          </div>
+
+          <h4 class="pay-sub">Payment Method</h4>
+          <p class="pay-hint">Select how the customer will pay.</p>
+          <div class="pay-method-row">
+            <div class="payment-method-grid" id="paymentMethodGrid"></div>
+            <button type="button" class="payment-method-btn payment-method-card" disabled title="Not available yet">Credit Card/Debit Card</button>
+          </div>
+
+          <div class="pay-gcash" id="gcashFields" style="display:none;">
+            <img src="img/gcash-qr.jpg" alt="GCash QR code (sample)" width="120" height="120">
+            <span>Scan with GCash to pay</span>
+          </div>
+
+          <div id="cashFields" style="display:none;">
+            <hr class="pay-rule">
+            <h4 class="pay-sub">Amount Tendered</h4>
+            <p class="pay-hint small">Enter the amount received from the customer.</p>
+            <div class="tender-field">
+              <span class="tender-peso">&#8369;</span>
+              <input type="number" id="payAmountReceived" min="0" step="1" placeholder="Enter amount.." aria-label="Amount tendered">
+              <button type="button" class="tender-clear" id="tenderClearBtn" aria-label="Clear amount"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg></button>
+            </div>
+            <div class="quick-label">Quick Denomination <em>(Optional)</em></div>
+            <div class="quick-row">
+              <button type="button" class="quick-btn" data-quick="500">&#8369;500</button>
+              <button type="button" class="quick-btn" data-quick="1000">&#8369;1,000</button>
+              <button type="button" class="quick-btn" data-quick="2000">&#8369;2,000</button>
+              <button type="button" class="quick-btn" data-quick="5000">&#8369;5,000</button>
+              <button type="button" class="quick-btn quick-exact" data-quick="exact">Exact Amount</button>
+            </div>
+            <div class="pay-change-box">
+              <div class="pc-cell pc-change">
+                <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+                <div><span>Change</span><strong id="payChange">&#8369;0.00</strong></div>
+              </div>
+              <div class="pc-sep"></div>
+              <div class="pc-cell pc-paid">
+                <svg viewBox="0 0 24 24"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+                <div><span>Total Paid</span><strong id="payTotalPaid">&#8369;0.00</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="pay-process" id="completeSaleBtn">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="9" y2="15"/></svg>
+            Process Payment
+            <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+          </button>
+        </div>
+
+        <div class="pay-panel pay-side">
+          <details class="pay-order" open>
+            <summary>
+              <svg class="po-icon" viewBox="0 0 24 24"><path d="M6 8h12l1 13H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+              <h3>Order Summary</h3>
+              <span class="po-badge" id="orderItemBadge">0 Items</span>
+              <svg class="po-chevron" viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"/></svg>
+            </summary>
+            <div class="order-table-wrap">
+              <table class="order-table">
+                <thead><tr><th>#</th><th>Item</th><th>Qty</th><th class="num">Unit Price</th><th class="num">Total Price</th></tr></thead>
+                <tbody id="orderSummaryBody"></tbody>
+              </table>
+            </div>
+            <div class="order-totals">
+              <div class="ot-row"><span>Subtotal</span><strong id="osSubtotal">&#8369;0.00</strong></div>
+              <div class="ot-row" style="display:none;"><span>Discount</span><span id="osDiscount">&#8369;0.00</span></div>
+              <div class="ot-row"><span>VAT (12%)</span><span>&mdash;</span></div>
+              <div class="ot-row ot-total"><span>Total Amount Due</span><strong id="osTotal">&#8369;0.00</strong></div>
+            </div>
+          </details>
+
+          <section class="pay-receipt">
+            <div class="pr-head">
+              <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><line x1="8.5" y1="11" x2="15.5" y2="11"/><line x1="8.5" y1="15" x2="15.5" y2="15"/></svg>
+              <h3>Receipt Preview</h3>
+              <button type="button" class="btn-print" id="printReceiptBtn" title="Opens the print dialog. Receipt-printer support comes later.">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                Print Receipt
+              </button>
+            </div>
+            <div class="receipt-preview" id="receiptPreview"></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- Sale screen: products + cart -->
+      <div class="pos-sale">
+        <section class="pos-col pos-products" data-poscol="browse">
+          <div class="pos-col-header">
+            <h3>Products</h3>
+            <div class="search-input"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="21" y2="21"/></svg><input type="text" id="posSearch" placeholder="Search product or ID"></div>
+            <div class="category-chip-row" id="posCategoryChips"></div>
+          </div>
+          <div class="pos-col-body">
+            <div class="product-tile-grid" id="posProductGrid"></div>
+          </div>
+        </section>
+
+        <section class="pos-col pos-cart" data-poscol="cart">
+          <div class="pos-cart-head">
+            <h3>Cart Details</h3>
+            <p>Details of all transaction</p>
+            <div class="pos-cart-count-row">
+              <span id="cartItemCount" class="hint">Cart is empty</span>
+              <button type="button" class="link-danger" id="clearCartBtn">Delete all</button>
+            </div>
+          </div>
+          <div class="pos-col-body" id="cartList"></div>
+          <div class="pos-cart-totals">
+            <div class="pay-summary-row"><span>Total Product Price</span><span id="paySubtotal">₱0</span></div>
+            <!-- Discount is hidden for now (to be reworked). It is only hidden, not removed: js/pos.js still reads #payDiscount, which stays at 0. -->
+            <div class="pay-summary-row" style="display:none;"><span>Discount (₱)</span><span class="discount-wrap"><input type="number" id="payDiscount" min="0" step="1" value="0" class="discount-input"><span class="discount-pct" id="discountPct"></span></span></div>
+            <div class="pay-summary-row"><span>Product Tax</span><span>—</span></div>
+            <div class="pay-summary-row total"><span>Grand Total</span><span id="payTotal">₱0</span></div>
+            <a class="btn btn-primary btn-block" href="#payment">Proceed to Payment</a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Sale success modal -->
+<div class="modal-overlay" id="saleSuccessOverlay">
+  <div class="modal">
+    <div class="modal-body" style="text-align:center;padding:2.125rem 1.5rem 1.125rem;">
+      <div style="width:3.5rem;height:3.5rem;border-radius:50%;background:var(--ok-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+        <svg viewBox="0 0 24 24" style="width:1.875rem;height:1.875rem;stroke:var(--ok);stroke-width:2;fill:none;"><circle cx="12" cy="12" r="9"/><polyline points="7.5,12.5 10.5,15.5 16.5,9"/></svg>
+      </div>
+      <h2 style="margin-bottom:0.25rem;">Sale Completed</h2>
+      <p class="text-muted" id="saleTxnNumber" style="margin-bottom:2px;font-weight:600;"></p>
+      <p class="text-muted" id="saleSuccessDetail" style="margin-bottom:0;"></p>
+      <div style="text-align:left;margin-top:1.125rem;border-top:1px solid var(--border);padding-top:0.875rem;">
+        <div class="hint" style="margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;">Inventory Updated</div>
+        <div id="saleInventoryUpdates"></div>
+        <div class="hint" style="margin-top:0.625rem;">Also recorded in <a href="sales.html">Sales</a> &middot; stock levels updated in <a href="inventory.html">Inventory</a>.</div>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:center;border-top:none;padding-top:0.375rem;">
+      <button class="btn btn-secondary" id="printSaleReceiptBtn" type="button" title="Opens the print dialog. Receipt-printer support comes later.">Print Receipt</button>
+      <button class="btn btn-primary" id="newSaleBtn">Start New Sale</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/mock-data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/app.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/pos.js"></script>
+<script src="js/pos-receipt.js"></script>
+</body>
+</html>
